@@ -1,16 +1,29 @@
+# 改变色彩空间
+# 实现颜色追踪
 import cv2 as cv
 import numpy as np
-
-img = cv.imread('./img/1.jpeg')
-# for i in range(100):
-#     for j in range(1000):
-#         img[i, j] = [255, 255, 255]
-
-# img[0:100, 0:1000] = [255, 255, 255]
-# img[0:100, 0:1000] = img[100:200, 0:1000]
-b, g, r = cv.split(img)
-
-cv.imshow("zj", cv.merge((b, g, r)))
+flags = [i for i in dir(cv) if i.startswith('COLOR_')]
+print(flags)
 
 
-cv.waitKey(0)
+cap = cv.VideoCapture(0)
+while (1):
+    # Take each frame
+    _, frame = cap.read()
+    # Convert BGR to HSV
+    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    # define range of blue color in HSV
+    lower_blue = np.array([110, 50, 50])
+    upper_blue = np.array([130, 255, 255])
+    # Threshold the HSV image to get only blue colors
+    mask = cv.inRange(hsv, lower_blue, upper_blue)
+
+    # Bitwise-AND mask and original image
+    res = cv.bitwise_and(frame, frame, mask=mask)
+    cv.imshow('frame', frame)
+    cv.imshow('mask', mask)
+    cv.imshow('res', res)
+    k = cv.waitKey(5) & 0xFF
+    if k == 27:
+        break
+cv.destroyAllWindows()
