@@ -19,6 +19,7 @@ def main():
     cuda.synchronize()
     print("cpu print:")
     cpu_print(8)
+    # cuda.synchronize()
 
 
 if __name__ == "__main__":
