@@ -31,3 +31,9 @@ print('\n')
 for x in np.nditer(b.copy()):
     print(x, end=", ")
 print('\n')
+
+# 修改原数组元素
+for x in np.nditer(a, op_flags=['readwrite']):
+    x[...] = 2 * x
+print('修改后的数组是：')
+print(a)
